@@ -5,17 +5,18 @@ from .models import Category, Goal
 # from rest_framework import authentication, permissions
 # from .serializer import GoalSerializer, CategorySerializer
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from .forms import GoalForm
+from .forms import GoalForm, GoalUpdateForm
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin, PermissionRequiredMixin
 from django.contrib.auth.decorators import login_required, user_passes_test
 
 
-# def index_view(request):
-#     animals = Animal.objects.all().select_related('category')
-#     animals = Animal.objects.all().prefetch_related('category__foods')
-#     users = User.objects.all()
-#     goals = Goal.objects.all().selected_related('user').perfetch_realted('categories')
-#     return render(request, 'mainapp/index.html', {'users': users})
+def index_view(request):
+    # animals = Animal.objects.all().select_related('category')
+    # animals = Animal.objects.all().prefetch_related('category__foods')
+    # users = User.objects.all()
+    # goals = Goal.objects.all().selected_related('user').perfetch_realted('categories')
+    # return render(request, 'mainapp/index.html', {'users': users})
+    return render(request, 'mainapp/index.html')
 
 
 class CategoryListView(UserPassesTestMixin, ListView):
@@ -30,6 +31,15 @@ class CategoryListView(UserPassesTestMixin, ListView):
 class GoalListView(UserPassesTestMixin, ListView):
     model = Goal
     template_name = "goal_list"
+    context_object_name = "goals"
+
+    def test_func(self):
+        return self.request.user.is_authenticated
+
+
+class GoalDisableListView(UserPassesTestMixin, ListView):
+    model = Goal
+    template_name = "mainapp/goal_disable_list.html"
     context_object_name = "goals"
 
     def test_func(self):
@@ -55,9 +65,10 @@ class GoalDeleteView(LoginRequiredMixin, DeleteView):
     context_object_name = "goal"
     success_url = '/goal-list/'
 
+
 class GoalUpdateView(LoginRequiredMixin, UpdateView):
     model = Goal
-    form_class = GoalForm
+    form_class = GoalUpdateForm
     # template_name = "goal_form"
     success_url = '/goal-list/'
 

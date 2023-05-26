@@ -25,6 +25,7 @@ urlpatterns = [
     path('', views.index_view),
     path('category-list/', views.CategoryListView.as_view()),
     path('goal-list/', views.GoalListView.as_view()),
+    path('goal-disable-list/', views.GoalDisableListView.as_view()),
     path('goal-create/', views.GoalCreateView.as_view()),
     path('goal-delete/<int:pk>/', views.GoalDeleteView.as_view()),
     path('goal-update/<int:pk>/', views.GoalUpdateView.as_view()),
