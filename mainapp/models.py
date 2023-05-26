@@ -27,8 +27,12 @@ class Goal (models.Model):
     deadline = models.DateField(blank=False, null=False)
     started_at = models.DateField(auto_now_add=True)
 
-    user = models.ForeignKey(MyUser, blank=True, null=True, on_delete=models.CASCADE)
+    user = models.ForeignKey(MyUser, blank=True, null=True, on_delete=models.CASCADE, related_name='goals')
     categories = models.ManyToManyField(Category)
+
+    def get_time(self):
+        time = self.deadline - self.started_at
+        return time
 
     def __str__(self):
         return f"{self.name}, is_active-{self.is_active}, started_at-{self.started_at}, user-{self.user}"
